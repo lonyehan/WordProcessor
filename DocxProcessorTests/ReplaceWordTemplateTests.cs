@@ -68,19 +68,54 @@ namespace DocxProcessor.Tests
 
             FileStream fs = new FileStream(OutputFilePath, FileMode.Create);
 
-            BinaryWriter bw = new BinaryWriter(fs);
+            BinaryWriter bw = new BinaryWriter(fs);            
 
-            Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
+            Dictionary<string, ImageData> keyValuePairs = new Dictionary<string, ImageData>();
+
+            ImageData Value = new ImageData("C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\測試證件照.jpg", Width: 4.1M, Height: 4.1M);
+
+            keyValuePairs.Add("#圖片#", Value);            
             
-            keyValuePairs.Add("#圖片#", "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\測試.png");
+            bw.Write(Replacer.ReplaceTableCellByImage(TemplateFilePath, keyValuePairs));
 
-            var stream = Replacer.ReplaceByImage(TemplateFilePath, keyValuePairs);            
-                        
             bw.Close();
 
             fs.Close();
         }
-        [TestClass]
+        [TestMethod]
+        public void ReplaceByImage2()
+        {
+            string TemplateFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\ApplyFromArt.docx";
+
+            string OutputFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\testReplaceByImage2.docx";
+
+            var Replacer = new ReplaceWordTemplate();
+
+            FileStream fs = new FileStream(OutputFilePath, FileMode.Create);
+
+            BinaryWriter bw = new BinaryWriter(fs);
+
+            Dictionary<string, ImageData> keyValuePairs = new Dictionary<string, ImageData>();
+
+            string FileStorageRootPath = "D:\\Project\\files\\permission\\";
+            string NewPath = Convert.ToString(Convert.ToInt64(3610), 16).PadLeft(8, '0');
+            for (int i = 0; i < 10; i += 3)
+            {
+                NewPath = NewPath.Insert(i, "\\");
+            }
+            string FileNewPath = FileStorageRootPath + NewPath + ".jpg";
+
+            ImageData Value = new ImageData(FileNewPath, Width: 4.1M, Height: 4.1M);
+
+            keyValuePairs.Add("#圖片#", Value);
+
+            bw.Write(Replacer.ReplaceTableCellByImage(TemplateFilePath, keyValuePairs));
+
+            bw.Close();
+
+            fs.Close();
+        }        
+    [TestClass]
         public class TestModel
         {
             [Display(Name = "編號")]
