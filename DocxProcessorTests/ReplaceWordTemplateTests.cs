@@ -34,7 +34,32 @@ namespace DocxProcessor.Tests
             bw.Close();
 
             fs.Close();
-        }       
+        }
+        [TestMethod]
+        public void ReplaceCase2()
+        {
+            string TemplateFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\ApplyFromArt.docx";
+            string OutputFilePath2 = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\testCase2.docx";
+            Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
+            
+            
+            keyValuePairs.Add("#測試#", "替換");
+            var Replacer = new ReplaceWordTemplate();
+
+            Dictionary<string, string> keyValuePairs2 = new Dictionary<string, string>();
+                        
+            keyValuePairs2.Add("#圖片#", "123");
+
+            FileStream fs = new FileStream(OutputFilePath2, FileMode.Create);
+
+            BinaryWriter bw = new BinaryWriter(fs);
+
+            bw.Write(Replacer.Replace(Replacer.Replace(TemplateFilePath, keyValuePairs), keyValuePairs2));
+
+            bw.Close();
+
+            fs.Close();
+        }
         [TestMethod]
         public void ReplaceByModel()
         {
