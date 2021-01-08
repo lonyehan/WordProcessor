@@ -139,8 +139,21 @@ namespace DocxProcessor.Tests
             bw.Close();
 
             fs.Close();
-        }        
-    [TestClass]
+        }
+        [TestMethod]
+        public void ReplaceByImage3()
+        {
+            string TemplateFilePath = "C:\\Users\\歐家豪\\Pictures\\藝才\\測試用證件照.jpg";            
+                      
+            Image img = Image.FromFile(TemplateFilePath);
+            ImageData test = new ImageData(TemplateFilePath, 4.1M);
+            //Console.Write(img.Width);
+            //Console.Write((test.WidthInEMU / 360000M).ToString());
+            Console.Write((test.HeightInEMU / 360000M).ToString());
+            //1476000.0
+            //81279349.86109869832640323690
+        }
+        [TestClass]
         public class TestModel
         {
             [Display(Name = "編號")]
