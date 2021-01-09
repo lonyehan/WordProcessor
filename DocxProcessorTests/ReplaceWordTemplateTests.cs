@@ -22,8 +22,8 @@ namespace DocxProcessor.Tests
 4.	備有縝密的專車路線與4人一寢冷氣宿舍，優質環境歡迎蒞校參觀或來電詢問(037-868680分機204)。
 ";
 
-            keyValuePairs.Add("#1#", TestStr);            
-            var Replacer = new ReplaceWordTemplate();            
+            keyValuePairs.Add("#1#", TestStr);
+            var Replacer = new ReplaceWordTemplate();
 
             FileStream fs = new FileStream(OutputFilePath2, FileMode.Create);
 
@@ -41,13 +41,13 @@ namespace DocxProcessor.Tests
             string TemplateFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\ApplyFromArt.docx";
             string OutputFilePath2 = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\testCase2.docx";
             Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
-            
-            
+
+
             keyValuePairs.Add("#測試#", "替換");
             var Replacer = new ReplaceWordTemplate();
 
             Dictionary<string, string> keyValuePairs2 = new Dictionary<string, string>();
-                        
+
             keyValuePairs2.Add("#圖片#", "123");
 
             FileStream fs = new FileStream(OutputFilePath2, FileMode.Create);
@@ -69,9 +69,9 @@ namespace DocxProcessor.Tests
             test.NO = 200;
             test.Name = "Test";
             test.手機 = "0905337291";
-            test.Date = new DateTime(2020,01,28);
+            test.Date = new DateTime(2020, 01, 28);
 
-            var Replacer = new ReplaceWordTemplate();            
+            var Replacer = new ReplaceWordTemplate();
             FileStream fs = new FileStream(OutputFilePath, FileMode.Create);
 
             BinaryWriter bw = new BinaryWriter(fs);
@@ -86,21 +86,21 @@ namespace DocxProcessor.Tests
         public void ReplaceByImage()
         {
             string TemplateFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\ApplyFromArt.docx";
-            
+
             string OutputFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\testReplaceByImage.docx";
-            
+
             var Replacer = new ReplaceWordTemplate();
 
             FileStream fs = new FileStream(OutputFilePath, FileMode.Create);
 
-            BinaryWriter bw = new BinaryWriter(fs);            
+            BinaryWriter bw = new BinaryWriter(fs);
 
             Dictionary<string, ImageData> keyValuePairs = new Dictionary<string, ImageData>();
 
             ImageData Value = new ImageData("C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\測試證件照.jpg", Width: 4.1M, Height: 4.1M);
 
-            keyValuePairs.Add("#圖片#", Value);            
-            
+            keyValuePairs.Add("#圖片#", Value);
+
             bw.Write(Replacer.ReplaceTableCellByImage(TemplateFilePath, keyValuePairs));
 
             bw.Close();
@@ -143,8 +143,8 @@ namespace DocxProcessor.Tests
         [TestMethod]
         public void ReplaceByImage3()
         {
-            string TemplateFilePath = "C:\\Users\\歐家豪\\Pictures\\藝才\\測試用證件照.jpg";            
-                      
+            string TemplateFilePath = "C:\\Users\\歐家豪\\Pictures\\藝才\\測試用證件照.jpg";
+
             Image img = Image.FromFile(TemplateFilePath);
             ImageData test = new ImageData(TemplateFilePath, 4.1M);
             //Console.Write(img.Width);
@@ -152,6 +152,34 @@ namespace DocxProcessor.Tests
             Console.Write((test.HeightInEMU / 360000M).ToString());
             //1476000.0
             //81279349.86109869832640323690
+        }
+        [TestMethod]
+        public void ReplaceByModelList()
+        {
+            string TemplateFilePath = "C:\\Users\\lonye\\Desktop\\SideProject\\WordProcessor\\DocxProcessorTests\\WordTemplate\\StudentList.docx";
+            string OutputFilePath = "C:\\Users\\lonye\\Desktop\\SideProject\\WordProcessor\\DocxProcessorTests\\WordTemplate\\ReplaceByModelList.docx";
+
+            // ModelList
+            List<Student> Datas = new List<Student>();
+            Datas.Add(new Student());
+            Datas.Add(new Student());
+            Datas[0].編號 = "0";
+            Datas[0].姓名 = "歐家豪";
+            Datas[1].編號 = "1";
+            Datas[1].姓名 = "歐家怡";
+
+            var Replacer = new ReplaceWordTemplate();
+
+            FileStream fs = new FileStream(OutputFilePath, FileMode.Create);
+
+            BinaryWriter bw = new BinaryWriter(fs);
+
+
+            bw.Write(Replacer.Replace(TemplateFilePath, Datas));
+
+            bw.Close();
+
+            fs.Close();
         }
         [TestClass]
         public class TestModel
@@ -163,6 +191,11 @@ namespace DocxProcessor.Tests
             public DateTime? Date { get; set; }
 
         }
-
+        [TestClass]
+        public class Student
+        {
+            public string 編號 { get; set; }
+            public string 姓名 { get; set; }
+        }
     }
 }
