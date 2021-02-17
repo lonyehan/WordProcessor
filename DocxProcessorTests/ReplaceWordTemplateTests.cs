@@ -13,8 +13,8 @@ namespace DocxProcessor.Tests
         [TestMethod]
         public void ReplaceCase1()
         {
-            string TemplateFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\ApplyFromArt.docx";
-            string OutputFilePath2 = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\testCase1.docx";
+            string TemplateFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\StudentList.docx";
+            string OutputFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\StudentList2.docx";
             Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
             string TestStr = @"1.	符合報名條件及門檻者，依選校登記序號現場分發。
 2.	本校升學績效優質，超高國立大學錄取率：109年第17屆畢業班，國立大學錄取率高達96%。
@@ -22,10 +22,11 @@ namespace DocxProcessor.Tests
 4.	備有縝密的專車路線與4人一寢冷氣宿舍，優質環境歡迎蒞校參觀或來電詢問(037-868680分機204)。
 ";
 
-            keyValuePairs.Add("#1#", TestStr);
+            keyValuePairs.Add("#sbd_1_0_0#", TestStr);
+            keyValuePairs.Add("#sbd_1_0_1#", "H12313213221G");
             var Replacer = new ReplaceWordTemplate();
 
-            FileStream fs = new FileStream(OutputFilePath2, FileMode.Create);
+            FileStream fs = new FileStream(OutputFilePath, FileMode.Create);
 
             BinaryWriter bw = new BinaryWriter(fs);
 
@@ -63,13 +64,11 @@ namespace DocxProcessor.Tests
         [TestMethod]
         public void ReplaceByModel()
         {
-            string TemplateFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\ApplyFromArt.docx";
-            string OutputFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\testByModel.docx";
+            string TemplateFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\StudentList.docx";
+            string OutputFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\StudentList2.docx";
             TestModel test = new TestModel();
-            test.NO = 200;
-            test.Name = "Test";
-            test.手機 = "0905337291";
-            test.Date = new DateTime(2020, 01, 28);
+            test.sbd_1_0_0 = "200";
+            test.sbd_1_0_1 = "0905337291";            
 
             var Replacer = new ReplaceWordTemplate();
             FileStream fs = new FileStream(OutputFilePath, FileMode.Create);
@@ -85,7 +84,7 @@ namespace DocxProcessor.Tests
         [TestMethod]
         public void ReplaceByImage()
         {
-            string TemplateFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\ApplyFromArt.docx";
+            string TemplateFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\AdmissionNumberForm.docx";
 
             string OutputFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\testReplaceByImage.docx";
 
@@ -97,9 +96,9 @@ namespace DocxProcessor.Tests
 
             Dictionary<string, ImageData> keyValuePairs = new Dictionary<string, ImageData>();
 
-            ImageData Value = new ImageData("C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\測試證件照.jpg", Width: 4.1M, Height: 4.1M);
+            ImageData Value = new ImageData("C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\測試用證件照.jpg", Width: 4.1M, Height: 4.1M);
 
-            keyValuePairs.Add("#圖片#", Value);
+            keyValuePairs.Add("#證件照#", Value);
 
             bw.Write(Replacer.ReplaceTableCellByImage(TemplateFilePath, keyValuePairs));
 
@@ -156,18 +155,20 @@ namespace DocxProcessor.Tests
         [TestMethod]
         public void ReplaceByModelList()
         {
-            string TemplateFilePath = "C:\\Users\\lonye\\Desktop\\SideProject\\WordProcessor\\DocxProcessorTests\\WordTemplate\\StudentList.docx";
-            string OutputFilePath = "C:\\Users\\lonye\\Desktop\\SideProject\\WordProcessor\\DocxProcessorTests\\WordTemplate\\ReplaceByModelList.docx";
+            string TemplateFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\StudentList5.docx";
+            string OutputFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\ReplaceByModelList.docx";
 
             // ModelList
             List<Student> Datas = new List<Student>();
             Datas.Add(new Student());
             Datas.Add(new Student());
-            Datas[0].編號 = "0";
-            Datas[0].姓名 = "歐家豪";
-            Datas[1].編號 = "1";
-            Datas[1].姓名 = "歐家怡";
-
+            Datas[0].sbd_1_0_0 = "1232";
+            Datas[0].sbd_1_0_1  = "1232";
+            Datas[0].sbd_1_0_2  = "1232";
+            Datas[1].sbd_1_0_0 = "1232";
+            Datas[1].sbd_1_0_1 = "1232";
+            Datas[1].sbd_1_0_2 = "1232";
+            
             var Replacer = new ReplaceWordTemplate();
 
             FileStream fs = new FileStream(OutputFilePath, FileMode.Create);
@@ -175,7 +176,7 @@ namespace DocxProcessor.Tests
             BinaryWriter bw = new BinaryWriter(fs);
 
 
-            bw.Write(Replacer.Replace(TemplateFilePath, Datas));
+            bw.Write(Replacer.Replace(TemplateFilePath, Datas));            
 
             bw.Close();
 
@@ -184,18 +185,29 @@ namespace DocxProcessor.Tests
         [TestClass]
         public class TestModel
         {
-            [Display(Name = "編號")]
-            public int NO { get; set; }
-            public string Name { get; set; }
-            public string 手機 { get; set; }
-            public DateTime? Date { get; set; }
+            public string sbd_1_0_0 { get; set; }
+            public string sbd_1_0_1 { get; set; }
 
         }
         [TestClass]
         public class Student
-        {
-            public string 編號 { get; set; }
-            public string 姓名 { get; set; }
+        {              
+            public string sbd_1_0_0 { get; set; }
+            public string sbd_1_0_1 { get; set; }
+            public string sbd_1_0_2 { get; set; }
+            //public string sbd_1_0_3 { get; set; }
+            //public string sbd_1_0_4 { get; set; }
+            //public string sbd_1_0_5 { get; set; }
+            //public string sbd_1_0_6 { get; set; }
+            //public string sbd_1_0_7 { get; set; }
+            //public string sbd_1_0_8 { get; set; }
+            //public string sbd_1_0_9 { get; set; }
+            //public string sbd_1_0_10 { get; set; }
+            //public string sbd_1_0_11 { get; set; }
+            //public string sbd_1_0_12 { get; set; }
+            //public string sbd_1_0_13 { get; set; }
+            //public string sbd_1_0_14 { get; set; }
+            //public string sbd_1_0_15 { get; set; }
         }
     }
 }

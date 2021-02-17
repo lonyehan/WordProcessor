@@ -13,23 +13,29 @@ namespace DocxProcessor.Tests
         [TestMethod]
         public void MergeTwoDocx()
         {
-            string TemplateFilePath = "C:\\Users\\lonye\\Desktop\\SideProject\\WordProcessor\\DocxProcessorTests\\WordTemplate\\test.docx";
-            string TemplateFilePath2 = "C:\\Users\\lonye\\Desktop\\SideProject\\WordProcessor\\DocxProcessorTests\\WordTemplate\\test2.docx";
-            string OutputFilePath = "C:\\Users\\lonye\\Desktop\\SideProject\\WordProcessor\\DocxProcessorTests\\WordTemplate\\MergeOutput.docx";
-            FileStream docx1 = new FileStream(TemplateFilePath, FileMode.Open);
+            string TemplateFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\StudentList.docx";
+            string TemplateFilePath2 = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\StudentList2.docx";
+            string TemplateFilePath3 = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\ReplaceByModelList.docx";
+            string TemplateFilePath4 = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\StudentList4.docx";
+            string OutputFilePath = "C:\\Users\\歐家豪\\source\\repos\\WordProcessor\\Template\\MergeOutput.docx";
+            //FileStream docx1 = new FileStream(TemplateFilePath, FileMode.Open);
             FileStream docx2 = new FileStream(TemplateFilePath2, FileMode.Open);
+            FileStream docx3 = new FileStream(TemplateFilePath3, FileMode.Open);
+            FileStream docx4 = new FileStream(TemplateFilePath4, FileMode.Open);
 
             var Replacer = new ReplaceWordTemplate();
             var Merger = new MergeWordTemplate();
 
             List<Stream> Result = new List<Stream>();
-            
-            Dictionary<string, string> ReplaceItems = new Dictionary<string, string>();
-            ReplaceItems.Add("#1#", "123");
+            Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
 
-            Result.Add(docx1);
+            keyValuePairs.Add("#1#", "123");
+
+            Result.Add(new MemoryStream(Replacer.Replace(TemplateFilePath, keyValuePairs)));
                                     
-            Result.Add(new MemoryStream(Replacer.Replace(OutputFilePath, ReplaceItems)));
+            Result.Add(docx2);
+            Result.Add(docx3);
+            Result.Add(docx4);
 
             FileStream fs = new FileStream(OutputFilePath, FileMode.Create);
 
